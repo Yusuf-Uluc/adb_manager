@@ -5,7 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_linux
   native_context_menu
-  system_tray
+  tray_manager
   url_launcher_linux
 )
 

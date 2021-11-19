@@ -213,7 +213,7 @@ packages:
     source: hosted
     version: "0.2.0+3"
   path:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path
       url: "https://pub.dartlang.org"
@@ -385,13 +385,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  system_tray:
-    dependency: "direct main"
-    description:
-      name: system_tray
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.7"
   term_glyph:
     dependency: transitive
     description:
@@ -406,6 +399,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.2"
+  tray_manager:
+    dependency: "direct main"
+    description:
+      name: tray_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   typed_data:
     dependency: transitive
     description:
@@ -455,6 +455,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.5"
   vector_math:
     dependency: transitive
     description:

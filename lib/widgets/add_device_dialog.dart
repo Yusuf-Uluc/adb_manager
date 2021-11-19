@@ -1,6 +1,7 @@
 import 'package:adb_manager/constants/constants.dart';
 import 'package:adb_manager/models/models.dart';
 import 'package:adb_manager/riverpod/adb_devices.dart';
+import 'package:adb_manager/views/home_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:adb_manager/widgets/widgets.dart';
@@ -48,6 +49,8 @@ class AddDeviceDialog extends StatelessWidget {
               name: nameController.text,
               ipv4: ipv4Controller.text,
             );
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomeView()));
         close(context);
       }
     }

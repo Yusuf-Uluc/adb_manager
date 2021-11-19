@@ -56,6 +56,16 @@ class ADBServices {
     BuildContext context,
     Device device,
   ) async {
+    Future.delayed((const Duration(seconds: 15)), () {
+      shell.kill();
+      stopIndicator(context);
+      showErrorDialog(
+        context: context,
+        title: 'Error',
+        content:
+            "Couldn't connect. Make sure this device exists and you have access to it.",
+      );
+    });
     startIndicator(context);
     // Try to connect without specifying port
     final result0 = await shell.run('adb connect ${device.ipv4}');
@@ -149,19 +159,13 @@ class ADBServices {
     Device device,
   ) async {
     startIndicator(context);
-    final result = await shell.run('adb disconnect ${device.ipv4}');
-    context.read(selectedDevicesProvider.notifier).unselectDevice(
-          context,
-          device,
-        );
-    if (result.outText.startsWith('error: no such device')) {
-      stopIndicator(context);
-      showErrorDialog(
-        context: context,
-        title: 'Error',
-        content: 'It seems like this device is already disconnected',
-      );
-    } else {
+    final result1 = await Process.run('adb', ['devices']);
+    if (result1.stdout.toString().contains(device.ipv4 + ':5555')) {
+      await shell.run('adb disconnect ${device.ipv4}');
+      context.read(selectedDevicesProvider.notifier).unselectDevice(
+            context,
+            device,
+          );
       stopIndicator(context);
     }
   }
@@ -190,7 +194,7 @@ class ADBServices {
         showErrorDialog(
           context: scaffoldKey.currentContext!,
           title: 'Error',
-          content: 'Make sure you have Scrcpy installed',
+          content: 'An Unknown error happened.',
         );
       }
     }

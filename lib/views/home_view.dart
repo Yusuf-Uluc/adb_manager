@@ -7,8 +7,7 @@ import 'package:adb_manager/widgets/widgets.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path/path.dart' as p;
-import 'package:system_tray/system_tray.dart' as st;
+import 'package:tray_manager/tray_manager.dart' as tm;
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -17,78 +16,88 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
-  final st.SystemTray _systemTray = st.SystemTray();
+class _HomeViewState extends State<HomeView> with tm.TrayListener {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  @override
-  void initState() {
-    super.initState();
-    context.read(adbDevicesProvider.notifier).initialize(context).then(
-          (devices) => initSystemTray(devices),
-        );
-  }
-
-  Future<void> initSystemTray(List<Device> devices) async {
-    final menu = [
-      st.SubMenu(
-        label: 'Connect to...',
-        children: [
-          for (final device in devices)
-            st.MenuItem(
-              label: device.name,
-              onClicked: () {
-                ADBServices().connectDevice(context, device);
-              },
-            ),
-        ],
+  late List<Device> devices;
+  Future<void> initSystemTray() async {
+    await tm.TrayManager.instance.setIcon(
+      Platform.isWindows ? 'assets/tray_icon.ico' : 'assets/tray_icon.png',
+    );
+    List<tm.MenuItem> items = [
+      tm.MenuItem(
+        key: 'connect_to',
+        title: 'Connect to...',
+        items: devices.map((device) {
+          return tm.MenuItem(
+            key: 'connect_to_${device.name}',
+            title: device.name,
+          );
+        }).toList(),
       ),
-      st.SubMenu(
-        label: 'Run scrcpy...',
-        children: [
-          for (final device in devices)
-            st.MenuItem(
-              label: device.name,
-              onClicked: () {
-                ADBServices().scrcpy(scaffoldKey, device);
-              },
-            ),
-        ],
+      tm.MenuItem(
+        key: 'run_scrcpy',
+        title: 'Run scrcpy...',
+        items: devices.map((device) {
+          return tm.MenuItem(
+            key: 'run_scrcpy_${device.name}',
+            title: device.name,
+          );
+        }).toList(),
       ),
-      st.MenuItem(
-        label: 'Disconnect everything',
-        onClicked: () {
-          ADBServices().disconnectAll(context);
-        },
+      tm.MenuItem.separator,
+      tm.MenuItem(
+        key: 'disconnect_all',
+        title: 'Disconnect All',
       ),
-      st.MenuItem(
-        label: 'Show Application',
-        onClicked: () {
-          appWindow.show();
-        },
+      tm.MenuItem(
+        key: 'show_application',
+        title: 'Show Application',
       ),
-      st.MenuItem(
-        label: 'Quit Application',
-        onClicked: () {
-          appWindow.close();
-        },
-      ),
+      tm.MenuItem(
+        key: 'quit_application',
+        title: 'Quit Application',
+      )
     ];
 
-    await _systemTray.initSystemTray(
-      "ADB Manager",
+    await tm.TrayManager.instance.setContextMenu(items);
+  }
 
-      /// NOT WORKING/NO ICON SHOWING -------------
-      iconPath: p.joinAll([
-        p.dirname(Platform.resolvedExecutable),
-        'data/flutter_assets/assets',
-        'app_icon.png'
-      ]),
+  @override
+  void onTrayMenuItemClick(tm.MenuItem menuItem) {
+    if (menuItem.key.startsWith('connect_to')) {
+      final deviceName = menuItem.key.split('_')[2];
+      final device = devices.firstWhere((device) => device.name == deviceName);
+      ADBServices().connectDevice(context, device);
+    } else if (menuItem.key.startsWith('run_scrcpy')) {
+      final deviceName = menuItem.key.split('_')[2];
+      final device = devices.firstWhere((device) => device.name == deviceName);
+      ADBServices().scrcpy(scaffoldKey, device);
+    } else if (menuItem.key == 'disconnect_all') {
+      ADBServices().disconnectAll(context);
+    } else if (menuItem.key == 'show_application') {
+      appWindow.show();
+    } else if (menuItem.key == 'quit_application') {
+      appWindow.close();
+    }
+  }
 
-      /// --------------------
-      toolTip: "ADB Manager",
-    );
+  @override
+  void initState() {
+    context.read(loadingIndicatorProvider.notifier).updateValue(true);
+    context
+        .read(adbDevicesProvider.notifier)
+        .initialize(context)
+        .then((value) => setState(() => devices = value))
+        .then((value) => initSystemTray());
+    context.read(loadingIndicatorProvider.notifier).updateValue(false);
+    tm.TrayManager.instance.addListener(this);
+    super.initState();
+  }
 
-    await _systemTray.setContextMenu(menu);
+  @override
+  void dispose() {
+    tm.TrayManager.instance.removeListener(this);
+    super.dispose();
   }
 
   @override
