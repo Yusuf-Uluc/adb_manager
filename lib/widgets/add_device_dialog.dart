@@ -88,17 +88,19 @@ class AddDeviceDialog extends StatelessWidget {
           )
         ],
       ),
-      button2: Consumer(builder: (context, watch, child) {
-        return TextButton(
-          onPressed: () {
-            validate(
-              context,
-              watch(adbDevicesProvider),
-            );
-          },
-          child: const Text('Add'),
-        );
-      }),
+      button2: Consumer(
+        builder: (context, watch, child) {
+          return TextButton(
+            onPressed: () {
+              validate(
+                context,
+                watch(adbDevicesProvider),
+              );
+            },
+            child: const Text('Add'),
+          );
+        },
+      ),
       button1: TextButton(
         onPressed: () {
           close(context);

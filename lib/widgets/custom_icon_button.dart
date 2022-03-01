@@ -29,17 +29,18 @@ class CustomIconButton extends StatelessWidget {
           height: 35,
           width: 35,
           child: Material(
-              color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(borderRadiusM),
+            elevation: 3,
+            child: InkWell(
               borderRadius: BorderRadius.circular(borderRadiusM),
-              elevation: 3,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(borderRadiusM),
-                onTap: onTap,
-                child: Icon(
-                  icon,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              )),
+              onTap: onTap,
+              child: Icon(
+                icon,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ),
         ),
       ),
     );

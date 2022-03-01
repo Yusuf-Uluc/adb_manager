@@ -10,39 +10,42 @@ class WindowBar extends StatelessWidget {
       height: 40,
       color: Colors.transparent,
       child: WindowTitleBarBox(
-          child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
               child: MoveWindow(
-                  child: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 30.0),
-              child: Text(
-                'ADB Manager',
-                style: Theme.of(context)
-                    .textTheme
-                    .subtitle1!
-                    .copyWith(color: Colors.white70),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: Text(
+                      'ADB Manager',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(color: Colors.white70),
+                    ),
+                  ),
+                ),
               ),
             ),
-          ))),
-          MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: GestureDetector(
-              onTap: () {
-                appWindow.hide();
-              },
-              child: const Icon(
-                Icons.close_rounded,
-                size: 25,
-                color: Colors.white70,
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () {
+                  appWindow.hide();
+                },
+                child: const Icon(
+                  Icons.close_rounded,
+                  size: 25,
+                  color: Colors.white70,
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 5),
-        ],
-      )),
+            const SizedBox(width: 5),
+          ],
+        ),
+      ),
     );
   }
 }

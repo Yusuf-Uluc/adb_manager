@@ -41,12 +41,13 @@ class DeviceCard extends StatelessWidget {
                   });
             }),
         cm.MenuItem(
-            title: 'Delete',
-            onSelected: () {
-              context
-                  .read(adbDevicesProvider.notifier)
-                  .deleteDevice(context, device);
-            })
+          title: 'Delete',
+          onSelected: () {
+            context
+                .read(adbDevicesProvider.notifier)
+                .deleteDevice(context, device);
+          },
+        )
       ],
       child: DecoratedBox(
         decoration: selected

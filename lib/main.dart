@@ -15,6 +15,7 @@ Future<void> main() async {
   );
   doWhenWindowReady(() {
     const initialSize = Size(600, 450);
+    appWindow.maxSize = const Size(800, 600);
     appWindow.minSize = initialSize;
     appWindow.size = initialSize;
     appWindow.alignment = Alignment.center;

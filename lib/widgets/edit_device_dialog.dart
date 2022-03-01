@@ -90,17 +90,19 @@ class EditDeviceDialog extends StatelessWidget {
           )
         ],
       ),
-      button2: Consumer(builder: (context, watch, child) {
-        return TextButton(
-          onPressed: () {
-            validate(
-              context,
-              watch(adbDevicesProvider),
-            );
-          },
-          child: const Text('Edit'),
-        );
-      }),
+      button2: Consumer(
+        builder: (context, watch, child) {
+          return TextButton(
+            onPressed: () {
+              validate(
+                context,
+                watch(adbDevicesProvider),
+              );
+            },
+            child: const Text('Edit'),
+          );
+        },
+      ),
       button1: TextButton(
         onPressed: () {
           close(context);

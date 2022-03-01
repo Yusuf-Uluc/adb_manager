@@ -56,16 +56,6 @@ class ADBServices {
     BuildContext context,
     Device device,
   ) async {
-    Future.delayed((const Duration(seconds: 15)), () {
-      shell.kill();
-      stopIndicator(context);
-      showErrorDialog(
-        context: context,
-        title: 'Error',
-        content:
-            "Couldn't connect. Make sure this device exists and you have access to it.",
-      );
-    });
     startIndicator(context);
     // Try to connect without specifying port
     final result0 = await shell.run('adb connect ${device.ipv4}');
@@ -216,7 +206,7 @@ void showErrorDialog({
         button1: TextButton(
           onPressed: () {
             Navigator.pop(context);
-            launch('https://github.com/Mesota22/adb_manager/issues');
+            launch('https://github.com/Yusuf-Uluc/adb_manager/issues');
           },
           child: const Text('Report Error'),
         ),

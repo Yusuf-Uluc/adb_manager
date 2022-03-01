@@ -44,12 +44,15 @@ class ADBDevicesNotifier extends StateNotifier<List<Device>> {
   Future<void> addDevice({required String name, required String ipv4}) async {
     final prefs = await SharedPreferences.getInstance();
 
-    await prefs.setStringList('adbDevices', [
-      ...stateToListString(state),
-      jsonEncode(
-        Device(name: name, ipv4: ipv4),
-      )
-    ]);
+    await prefs.setStringList(
+      'adbDevices',
+      [
+        ...stateToListString(state),
+        jsonEncode(
+          Device(name: name, ipv4: ipv4),
+        )
+      ],
+    );
 
     state = prefsToList(prefs.getStringList('adbDevices')!);
   }
