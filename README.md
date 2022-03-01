@@ -1,8 +1,12 @@
 # ADB MANAGER
 
-Easily Manage your ADB Connections using the Application or the system tray.
+### Features
+- connect devices via ADB (requires ADB to be installed)
+- Share your connected device's Screen (requires Scrcpy to be installed)
+- System Tray
 
-#### APP IS NOT WELL TESTED YET. THERE CAN ALSO BE ISSUES WITH ICONS. PLEASE WRITE A GITHUB ISSUE IF YOU ARE FACING ANY PROBLEMS
+### Warning
+The Application was only tested on Linux. The System Tray might not work on Windows.
 
 ## Images
 
